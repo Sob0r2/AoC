@@ -1,32 +1,24 @@
-
 def lottery_win():
-    with open("DAY 4/input.txt") as f:
+    with open("input.txt") as f:
         f = f.read().split("\n")
-    sum  = 0
+    res = 0
     for line in f:
-        ctr = 0
         winning,ours = line.split(':')[1].split('|')
         winning = list(filter(lambda x: len(x) >= 1, winning.split(' ')))
         ours = list(filter(lambda x: len(x) >= 1, ours.split(' ')))
-        for num in winning:
-            if num in ours:
-                ctr += 1
-        if ctr != 0:
-            sum += 2 ** (ctr-1)
-    return sum
+        ctr = sum(1 for num in winning if num in ours)
+        res += 2 ** (ctr-1) if ctr != 0 else 0
+    return res
 
 def sum_of_copies():
-    with open("DAY 4/input.txt") as f:
+    with open("input.txt") as f:
         f = f.read().split("\n")
     dic = {k+1:1 for k in range(len(f))}
     for ind,line in enumerate(f):
-        ctr = 0
         winning,ours = line.split(':')[1].split('|')
         winning = list(filter(lambda x: len(x) >= 1, winning.split(' ')))
         ours = list(filter(lambda x: len(x) >= 1, ours.split(' ')))
-        for num in winning:
-            if num in ours:
-                ctr += 1
+        ctr = sum(1 for num in winning if num in ours)
         for j in range(1,ctr+1):
             try:
                 dic[ind+1+j] += dic[ind+1]

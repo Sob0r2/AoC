@@ -7,17 +7,6 @@ pipe_directions = {
     ('7', 'up'): 'left', ('J', 'right'): 'up', ('L', 'down'): 'right',
     ('-', 'left'): 'left', ('-', 'right'): 'right', ('|', 'up'): 'up', ('|', 'down'): 'down'
 }
-
-def first(pipes_arr, sx, sy):
-    if pipes_arr[sx, sy + 1] in ['-', 'J', '7']:
-        return (sx, sy + 1), 'right'
-    if pipes_arr[sx - 1, sy] in ['|', 'F', '7']:
-        return (sx - 1, sy), 'up'
-    if pipes_arr[sx + 1, sy] in ['|', 'J', 'L']:
-        return (sx + 1, sy), 'down'
-    if pipes_arr[sx, sy - 1] in ['-', 'F', 'L']:
-        return (sx, sy - 1), 'left'
-
 def ex1():
     file_content = open("input.txt").read()
     mat = [list(text) for text in file_content.split('\n')]
@@ -47,12 +36,18 @@ def ex2():
 def dfs(mat):
     sx, sy = np.argwhere(np.array(mat) == 'S')[0]
     path = {}
-    start, dir = first(np.array(mat), sx, sy)
+
+    for key,val in directions.items():
+        if (mat[sx+val[0]][sy+val[1]],key) in pipe_directions.keys():
+            start,dir = (sx+val[0],sy+val[1]), key
+            break
+
     path[(start[0], start[1])] = (mat[start[0]][start[1]], dir)
     queue = []
     queue.append((start[0], start[1]))
     curr = (start[0], start[1])
     flag = False
+
     while curr != start or not flag:
         flag = True
         if curr == (sx,sy): break
@@ -60,6 +55,7 @@ def dfs(mat):
                curr[1] + directions[pipe_directions[path[curr]]][1])
         path[act] = (mat[act[0]][act[1]], pipe_directions[path[curr]])
         curr = act
+
     for p in ['|','-','7','L','F','J']:
         if (p,path[curr][1]) in pipe_directions.keys():
             if pipe_directions[(p,path[curr][1])] == path[start][1]:

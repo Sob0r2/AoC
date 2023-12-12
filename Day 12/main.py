@@ -1,7 +1,7 @@
 def prepare_input():
     file = open('input.txt').read().split('\n')
     file = [f.split(' ') for f in file]
-    inputs, numbers = [[*f[0]] for f in file], [[int(x) for x in f[1].split(',')] for f in file]
+    inputs,numbers = [[*f[0]] for f in file], [[int(x) for x in f[1].split(',')] for f in file]
     return inputs,numbers
 
 def ex1():

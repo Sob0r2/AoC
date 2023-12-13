@@ -27,6 +27,7 @@ def mirrors(ex):
                         res += cols
                         flag = True
     return res
+
 def checkrows(mat,ans_row,ex):
     for i in range(mat.shape[0]-1):
         if np.array_equal(mat[i,:],mat[i+1,:]):
